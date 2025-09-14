@@ -1,0 +1,13 @@
+{
+    "import": "@cspell/dict-lorem-ipsum/cspell-ext.json",
+    "caseSensitive": false,
+    "dictionaries": ["miaoma-words"],
+    "dictionaryDefinitions": [
+        {
+            "name": "miaoma-words",
+            "path": "./.cspell/miaoma-words.txt",
+            "addWords": true
+        }
+    ],
+    "ignorePaths": ["**/node_modules/**", "**/dist/**"]
+}
