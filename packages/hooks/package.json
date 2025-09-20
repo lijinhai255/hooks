@@ -1,0 +1,30 @@
+{
+    "name": "@miaoma-rhooks/hooks",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "module": "es/index.js",
+    "types": "es/index.d.mts",
+    "files": [
+        "es"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "test": "vitest run --color",
+        "test:cov": "vitest run --coverage --color"
+    },
+    "keywords": [],
+    "author": "Heyi",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@miaoma-rhooks/core": "workspace:*"
+    },
+    "devDependencies": {
+        "tsup": "8.5.0"
+    },
+    "peerDependencies": {
+        "react": "18.2.0",
+        "react-dom": "18.2.0"
+    }
+}

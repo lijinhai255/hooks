@@ -1,0 +1,25 @@
+{
+    "name": "@miaoma-rhooks/website",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "rspress dev",
+        "build": "rspress build",
+        "preview": "rspress preview"
+    },
+    "keywords": [],
+    "author": "Heyi",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@miaoma-rhooks/hooks": "workspace:*"
+    },
+    "devDependencies": {
+        "rspress": "1.45.5",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0"
+    },
+    "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    }
+}
