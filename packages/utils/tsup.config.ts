@@ -11,6 +11,5 @@ export default defineConfig({
     outDir: 'es', // 指定输出目录为 es
     outExtension: () => ({
         js: '.js'
-    }),
-    external: ['@miaoma-rhooks/utils', '@miaoma-rhooks/core'] // 标记为外部依赖
+    })
 })

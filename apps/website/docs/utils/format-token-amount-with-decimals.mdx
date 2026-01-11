@@ -1,0 +1,102 @@
+# formatTokenAmountWithDecimals
+
+根据指定的代币精度格式化代币数量，支持智能小数位数调整。
+
+## 代码演示
+
+import FormatTokenAmountWithDecimalsDemo from './FormatTokenAmountWithDecimals'
+
+<FormatTokenAmountWithDecimalsDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 原始值（字符串或数字） | `string \| number \| undefined \| null` | - |
+| tokenDecimals | 代币精度（如9、6等） | `number` | `9` |
+| displayDecimals | 显示的小数位数 | `number` | `2` |
+
+### 返回值
+
+返回格式化后的字符串，自动添加千分位分隔符。
+
+### 特性
+
+- **智能小数位数**: 对小于 1 的数值，自动扩展小数位数以保留有效数字
+- **高精度计算**: 使用 `bignumber.js` 确保浮点数精度
+- **千分位格式化**: 自动添加千分位分隔符
+- **零值处理**: 正确处理 0 值（不返回 "0" 而是保留有效数字）
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { formatTokenAmountWithDecimals } from '@miaoma-rhooks/utils'
+
+// SOL (9位精度)
+formatTokenAmountWithDecimals('1000000000', 9, 2)  // '1'
+formatTokenAmountWithDecimals('1500000000', 9, 2)  // '1.5'
+
+// SPL Token (6位精度)
+formatTokenAmountWithDecimals('1000000', 6, 2)  // '1'
+formatTokenAmountWithDecimals('1500000', 6, 2)  // '1.5'
+```
+
+### 智能小数位数
+
+```tsx
+// 对于小数值，自动扩展小数位数以显示有效数字
+formatTokenAmountWithDecimals('1', 9, 2)      // 显示更多小数位
+formatTokenAmountWithDecimals('100', 9, 2)    // 显示更多小数位
+
+// 对于大于等于1的数值，使用 displayDecimals
+formatTokenAmountWithDecimals('1000000000', 9, 2)  // '1'
+formatTokenAmountWithDecimals('1234567890', 9, 4)  // '1.2346'
+```
+
+### 不同精度
+
+```tsx
+// 自定义代币精度
+formatTokenAmountWithDecimals('1000000', 6, 2)    // '1' (6位精度)
+formatTokenAmountWithDecimals('100000000', 8, 2)  // '1' (8位精度)
+formatTokenAmountWithDecimals('1000000000', 9, 2) // '1' (9位精度)
+
+// 自定义显示精度
+formatTokenAmountWithDecimals('1234567890', 9, 0)  // '1'
+formatTokenAmountWithDecimals('1234567890', 9, 4)  // '1.2346'
+formatTokenAmountWithDecimals('1234567890', 9, 6)  // '1.234568'
+```
+
+### 千分位格式化
+
+```tsx
+formatTokenAmountWithDecimals('1000000000000', 9, 2)    // '1,000'
+formatTokenAmountWithDecimals('1234567890123', 9, 2)  // '1,234.57'
+```
+
+### 与 formatTokenAmount 的区别
+
+| 方法 | 使用场景 | 特点 |
+| --- | --- | --- |
+| `formatTokenAmount` | 固定精度格式化 | 使用整数除法，简单高效 |
+| `formatTokenAmountWithDecimals` | 可变精度格式化 | 使用浮点数除法，智能调整小数位 |
+
+```tsx
+// formatTokenAmount - 适合大部分场景
+formatTokenAmount('1500000', 2, 6)  // '1.5'
+
+// formatTokenAmountWithDecimals - 适合需要精确显示小数值的场景
+formatTokenAmountWithDecimals('1500000', 6, 2)  // '1.5'
+formatTokenAmountWithDecimals('1', 9, 2)       // 显示更多小数位
+```
+
+## 应用场景
+
+- 显示极小数量的代币（如 0.000000001 SOL）
+- 需要精确显示小数位的场景
+- 不同精度的代币显示
+- 需要智能调整小数位数的用户界面

@@ -1,0 +1,85 @@
+# formatPercentage
+
+格式化百分比，自动添加符号和颜色。
+
+## 代码演示
+
+import FormatPercentageDemo from './FormatPercentage'
+
+<FormatPercentageDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 原始值（字符串或数字） | `string \| number \| undefined \| null` | - |
+
+### 返回值
+
+返回一个对象，包含：
+- `text`: 格式化后的百分比字符串
+- `className`: Tailwind CSS 颜色类名
+
+### 特性
+
+- **自动符号**: 正值添加 `+`，负值保留 `-`
+- **颜色标识**: 正值绿色，负值红色
+- **2位小数**: 保留2位小数精度
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { formatPercentage } from '@miaoma-rhooks/utils'
+
+const result1 = formatPercentage(10.5)
+console.log(result1.text)      // '+10.50%'
+console.log(result1.className)  // 'text-[#32D668]' (绿色)
+
+const result2 = formatPercentage(-5.25)
+console.log(result2.text)      // '-5.25%'
+console.log(result2.className)  // 'text-[#FF3C4C]' (红色)
+```
+
+### 在 React 中使用
+
+```tsx
+function PercentageDisplay({ value }) {
+    const { text, className } = formatPercentage(value)
+
+    return (
+        <span className={className}>
+            {text}
+        </span>
+    )
+}
+
+// 使用
+<PercentageDisplay value={15.5} />  // <span class="text-[#32D668]">+15.50%</span>
+<PercentageDisplay value={-8.25} />  // <span class="text-[#FF3C4C]">-8.25%</span>
+```
+
+### 处理空值
+
+```tsx
+formatPercentage(null)    // { text: '0%', className: 'text-white' }
+formatPercentage(undefined) // { text: '0%', className: 'text-white' }
+formatPercentage('')      // { text: '0%', className: 'text-white' }
+```
+
+### 字符串输入
+
+```tsx
+formatPercentage('15.5')    // { text: '+15.50%', className: 'text-[#32D668]' }
+formatPercentage('-8.25')   // { text: '-8.25%', className: 'text-[#FF3C4C]' }
+```
+
+## 应用场景
+
+- 显示价格涨跌幅
+- 展示收益率
+- 显示增长率/下降率
+- 金融数据可视化

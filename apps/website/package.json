@@ -11,7 +11,8 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
-        "@miaoma-rhooks/hooks": "workspace:*"
+        "@miaoma-rhooks/hooks": "workspace:*",
+        "@miaoma-rhooks/utils": "workspace:*"
     },
     "devDependencies": {
         "rspress": "1.45.5",

@@ -42,3 +42,6 @@ export const useInfo = () => {
 export { useBoolean } from './use-boolean/use-boolean'
 export { useScroll } from './use-scroll/use-scroll'
 export { useToggle } from './use-toggle/use-toggle'
+
+// 工具函数导出
+export * from './utils'

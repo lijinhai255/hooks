@@ -18,5 +18,11 @@ export default defineConfig({
                 content: 'https://github.com'
             }
         ]
+    },
+    // 配置模块别名，指向本地 workspace 包
+    alias: {
+        '@miaoma-rhooks/utils': path.join(__dirname, '../../packages/utils/es'),
+        '@miaoma-rhooks/hooks': path.join(__dirname, '../../packages/hooks/es'),
+        '@miaoma-rhooks/core': path.join(__dirname, '../../packages/core/es')
     }
 })

@@ -8,5 +8,10 @@
         "text": "Hooks",
         "link": "/hooks",
         "activeMatch": "/hooks"
+    },
+    {
+        "text": "Utils",
+        "link": "/utils",
+        "activeMatch": "/utils"
     }
 ]

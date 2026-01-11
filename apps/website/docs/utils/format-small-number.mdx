@@ -1,0 +1,64 @@
+# formatSmallNumber
+
+格式化小数字，使用下标数字表示前导零数量。
+
+## 代码演示
+
+import FormatSmallNumberDemo from './FormatSmallNumber'
+
+<FormatSmallNumberDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| num | 要格式化的数字 | `number` | - |
+
+### 返回值
+
+返回格式化后的字符串，小数字用下标表示前导零。
+
+### 特性
+
+- **下标数字表示**: 使用 Unicode 下标数字（₀₁₂₃₄₅₆₇₈₉）表示前导零数量
+- **智能截取**: 自动截取4位有效数字
+- **支持科学计数法**: 正确处理科学计数法表示的小数
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { formatSmallNumber } from '@miaoma-rhooks/utils'
+
+formatSmallNumber(0.001)    // '0.0₂1000'  (2个前导零)
+formatSmallNumber(0.00001)  // '0.0₄1000'  (4个前导零)
+formatSmallNumber(0.000001) // '0.0₅1000'  (5个前导零)
+```
+
+### 显示规则
+
+```tsx
+// 整数返回4位小数
+formatSmallNumber(1)    // '1.0000'
+formatSmallNumber(100)  // '100.0000'
+
+// 无前导零的小数，截取前6位
+formatSmallNumber(0.1)  // '0.1000'
+formatSmallNumber(1.23) // '1.2299'
+```
+
+### 科学计数法
+
+```tsx
+formatSmallNumber(1e-3)   // '0.0₂1000'
+formatSmallNumber(1e-6)   // '0.0₅1000'
+```
+
+## 应用场景
+
+- 显示极小数量的代币（如 0.000000001）
+- 科学计算结果展示
+- 需要紧凑表示小数值的场景

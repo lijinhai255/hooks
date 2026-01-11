@@ -1,0 +1,78 @@
+# solToLamports
+
+将用户输入的 SOL 金额转换为 lamports（Solana 区块链的最小单位，1 SOL = 10^9 lamports）。
+
+## 代码演示
+
+import SolToLamportsDemo from './SolToLamports'
+
+<SolToLamportsDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| amount | SOL 金额（字符串或数字） | `string \| number` | - |
+
+### 返回值
+
+返回一个 `BN` (BigNumber) 对象，表示对应的 lamports 数量。
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { solToLamports } from '@miaoma-rhooks/utils'
+
+// 转换整数 SOL
+solToLamports(1).toString()      // '1000000000'
+solToLamports(2).toString()      // '2000000000'
+
+// 转换小数 SOL
+solToLamports('1.5').toString()  // '1500000000'
+solToLamports('0.5').toString()  // '500000000'
+```
+
+### 处理精度
+
+```tsx
+// 精确到 9 位小数（最小单位）
+solToLamports('0.000000001').toString()  // '1'
+
+// 多位小数会被截断到 9 位
+solToLamports('1.234567890123').toString()  // '1234567890'
+```
+
+### 字符串输入
+
+```tsx
+// 支持字符串类型输入
+solToLamports('1').toString()           // '1000000000'
+solToLamports('1.23456789').toString()  // '1234567890'
+```
+
+### 错误处理
+
+```tsx
+// 无效输入会返回 0
+solToLamports(NaN).toString()           // '0'
+solToLamports('invalid').toString()     // '0'
+```
+
+### 与 formatTokenAmount 配合使用
+
+```tsx
+import { solToLamports, formatTokenAmount } from '@miaoma-rhooks/utils'
+
+// 用户输入 1.5 SOL
+const userAmount = '1.5';
+
+// 转换为 lamports
+const lamports = solToLamports(userAmount);  // BN: 1500000000
+
+// 格式化显示
+const displayAmount = formatTokenAmount(lamports.toString(), 2, 9);  // '1.5'
+```

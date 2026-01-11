@@ -1,0 +1,67 @@
+# formatTokenAmount
+
+代币数量格式化工具，用于将最小单位（如 lamports）转换为可读的代币数量，并支持千分位格式化。
+
+## 代码演示
+
+import FormatTokenAmountDemo from './FormatTokenAmount'
+
+<FormatTokenAmountDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 代币数量（字符串或数字） | `string \| number \| undefined \| null` | - |
+| decimals | 显示的小数位数 | `number` | `2` |
+| solDecimals | 代币的小数位数（SOL为9，SPL Token通常为6） | `number` | `6` |
+
+### 返回值
+
+返回格式化后的字符串，包含千分位分隔符。
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { formatTokenAmount } from '@miaoma-rhooks/core'
+
+// 格式化 SPL Token（6位小数）
+formatTokenAmount('1000000') // '1'
+formatTokenAmount('1500000') // '1.5'
+formatTokenAmount('1234567') // '1.23'
+```
+
+### 格式化 SOL（9位小数）
+
+```tsx
+// 格式化 SOL
+formatTokenAmount('1000000000', 2, 9) // '1'
+formatTokenAmount('1500000000', 2, 9) // '1.5'
+```
+
+### 自定义小数位数
+
+```tsx
+formatTokenAmount('1234567', 0) // '1'
+formatTokenAmount('1234567', 4) // '1.2345'
+```
+
+### 千分位格式化
+
+```tsx
+formatTokenAmount('1000000000') // '1,000'
+formatTokenAmount('1234567890') // '1,234.56'
+formatTokenAmount('1000000000000') // '1,000,000'
+```
+
+### 错误处理
+
+```tsx
+formatTokenAmount(null) // '0'
+formatTokenAmount(undefined) // '0'
+formatTokenAmount('invalid') // '0'
+```

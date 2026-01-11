@@ -1,0 +1,83 @@
+# formatValue
+
+格式化数值显示为紧凑的美元格式（K、M、B）。
+
+## 代码演示
+
+import FormatValueDemo from './FormatValue'
+
+<FormatValueDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 要格式化的数值 | `number` | - |
+
+### 返回值
+
+返回格式化后的字符串，格式为 `$X.XX`，带有 K、M、B 后缀：
+- `K` = 千 (1,000)
+- `M` = 百万 (1,000,000)
+- `B` = 十亿 (1,000,000,000)
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { formatValue } from '@miaoma-rhooks/utils'
+
+// 格式化为 B (十亿)
+formatValue(1000000000)  // '$1.00B'
+formatValue(1500000000)  // '$1.50B'
+
+// 格式化为 M (百万)
+formatValue(1000000)     // '$1.00M'
+formatValue(5000000)     // '$5.00M'
+
+// 格式化为 K (千)
+formatValue(1000)        // '$1.00K'
+formatValue(5000)        // '$5.00K'
+
+// 格式化小数值
+formatValue(100)         // '$100.00'
+formatValue(50.5)        // '$50.50'
+```
+
+### 自动选择单位
+
+```tsx
+formatValue(999)          // '$999.00'   (小于 1K)
+formatValue(1000)         // '$1.00K'    (刚好 1K)
+formatValue(999999)       // '$1000.00K' (接近 1M)
+formatValue(1000000)      // '$1.00M'    (刚好 1M)
+formatValue(999999999)    // '$1000.00M' (接近 1B)
+formatValue(1000000000)   // '$1.00B'    (刚好 1B)
+```
+
+### 大额数值
+
+```tsx
+formatValue(1e10)         // '$10.00B'
+formatValue(1e11)         // '$100.00B'
+```
+
+### 小数精度
+
+```tsx
+formatValue(1234.56)      // '$1.23K'
+formatValue(1234567.89)   // '$1.23M'
+formatValue(1234567890)   // '$1.23B'
+```
+
+## 应用场景
+
+适用于显示：
+- 市场价值
+- 交易量
+- 资产总额
+- 财务数据
+- 任何需要紧凑显示的大额数值

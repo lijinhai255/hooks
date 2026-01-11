@@ -1,0 +1,78 @@
+# formatAmountInYiOrWan
+
+格式化金额为亿/万单位（中国数字单位）。
+
+## 代码演示
+
+import FormatAmountInYiOrWanDemo from './FormatAmountInYiOrWan'
+
+<FormatAmountInYiOrWanDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| amount | 原始金额（需要除以 10^8 和 10^6 处理精度） | `string \| number` | - |
+
+### 返回值
+
+返回格式化后的字符串，如："9 亿"、"500 万"。
+
+### 特性
+
+- **自动单位选择**: >= 1亿使用亿单位，< 1亿使用万单位
+- **高精度计算**: 使用 BigNumber 确保计算精度
+- **千分位格式化**: 大额金额自动添加千分位
+- **精度处理**: 保留小数位数
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { formatAmountInYiOrWan } from '@miaoma-rhooks/utils'
+
+// 亿单位
+formatAmountInYiOrWan('90000000000000000')  // '900 亿'
+formatAmountInYiOrWan('10000000000000000')  // '100 亿'
+
+// 万单位（实际上所有值都>=1亿）
+formatAmountInYiOrWan('100000000000000')   // '1 亿'
+formatAmountInYiOrWan('500000000000000')   // '5 亿'
+```
+
+### 大额金额
+
+```tsx
+formatAmountInYiOrWan('1000000000000000')   // '10 亿'
+formatAmountInYiOrWan('50000000000000000')  // '500 亿'
+formatAmountInYiOrWan('100000000000000000') // '1,000 亿'
+```
+
+### 小数精度
+
+```tsx
+formatAmountInYiOrWan('95000000000000000')  // '950 亿'
+formatAmountInYiOrWan('150500000000000')    // '1.51 亿'
+```
+
+### 空值处理
+
+```tsx
+formatAmountInYiOrWan(0)          // '0'
+formatAmountInYiOrWan('')         // '0'
+formatAmountInYiOrWan(null)      // '0'
+```
+
+## 应用场景
+
+- 显示公司市值（亿元人民币）
+- 格式化资产规模
+- 显示投资金额
+- 财务数据展示
+
+## 注意事项
+
+该函数会将输入值除以 10^14（10^8 × 10^6），确保输入值已包含精度信息。
