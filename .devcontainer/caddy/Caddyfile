@@ -1,0 +1,4 @@
+:8090, :9080, :9999, rhooks.miaomaedu.com {
+    root * /usr/share/caddy
+    file_server
+}

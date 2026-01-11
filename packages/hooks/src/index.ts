@@ -24,6 +24,13 @@ export const useName = () => {
     return heer
 }
 
+export const useInfo = () => {
+    return {
+        name: heer,
+        age: 18
+    }
+}
+
 // console.log(VERSION)
 
 // const a = 1

@@ -35,7 +35,7 @@
         }
     },
     "dependencies": {
-        "@miaoma-rhooks/hooks": "1.0.0"
+        "@miaoma-rhooks/hooks": "workspace:*"
     },
     "devDependencies": {
         "@types/node": "22.5.4",
