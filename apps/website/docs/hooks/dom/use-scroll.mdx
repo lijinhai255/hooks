@@ -1,0 +1,240 @@
+---
+title: useScroll
+order: 1
+group:
+    title: DOM 操作
+    order: 1
+---
+
+# useScroll
+
+获取元素的滚动位置的 Hook。
+
+## 何时使用
+
+当需要监听元素的滚动位置或实现滚动相关的功能时使用，例如：
+
+- 实现返回顶部按钮
+- 无限滚动加载更多内容
+- 滚动位置指示器
+- 基于滚动位置触发动画
+- 监听页面滚动并执行相应操作
+
+## 代码演示
+
+### 基础用法
+
+监听特定元素的滚动位置：
+
+```tsx
+import { useScroll } from '@miaoma-rhooks/hooks'
+import React, { useRef } from 'react'
+
+function Demo() {
+    const scrollRef = useRef<HTMLDivElement>(null)
+    const scroll = useScroll(scrollRef)
+
+    return (
+        <div>
+            <p>滚动位置: {JSON.stringify(scroll)}</p>
+            <div
+                style={{
+                    width: 300,
+                    height: 200,
+                    border: '1px solid #e8e8e8',
+                    overflow: 'auto'
+                }}
+                ref={scrollRef}
+            >
+                <div style={{ height: 500, width: 500 }}>
+                    这是一个可滚动的区域
+                </div>
+            </div>
+        </div>
+    )
+}
+```
+
+### 实时演示
+
+<UseScroll />
+
+### 监听页面滚动
+
+不传参数时，默认监听整个页面的滚动：
+
+```tsx
+import { useScroll } from '@miaoma-rhooks/hooks'
+
+function PageScrollDemo() {
+    const scroll = useScroll()
+
+    return (
+        <div style={{ height: '200vh' }}>
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    background: '#fff',
+                    padding: 16,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+            >
+                <p>页面滚动位置: Y = {scroll.y}px</p>
+            </div>
+        </div>
+    )
+}
+```
+
+### 使用节流优化性能
+
+通过 `wait` 参数设置节流时间，减少状态更新频率：
+
+```tsx
+import { useScroll } from '@miaoma-rhooks/hooks'
+import React, { useRef } from 'react'
+
+function ThrottledDemo() {
+    const scrollRef = useRef<HTMLDivElement>(null)
+
+    // 每 100ms 更新一次滚动位置
+    const scroll = useScroll(scrollRef, { wait: 100 })
+
+    return (
+        <div>
+            <p>滚动位置: {JSON.stringify(scroll)}</p>
+            <div ref={scrollRef} style={{ width: 300, height: 200, overflow: 'auto' }}>
+                <div style={{ height: 500, width: 500 }}>可滚动内容</div>
+            </div>
+        </div>
+    )
+}
+```
+
+### 返回顶部按钮
+
+结合滚动位置实现返回顶部功能：
+
+```tsx
+import { useScroll } from '@miaoma-rhooks/hooks'
+import React, { useEffect, useState } from 'react'
+
+function BackToTop() {
+    const scroll = useScroll()
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        setVisible(scroll.y > 300)
+    }, [scroll.y])
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    return (
+        <>
+            <div style={{ height: '200vh' }}>
+                <p>向下滚动超过 300px 后，会显示返回顶部按钮</p>
+            </div>
+            {visible && (
+                <button
+                    onClick={scrollToTop}
+                    style={{
+                        position: 'fixed',
+                        bottom: 50,
+                        right: 50,
+                        padding: '10px 20px',
+                        background: '#1890ff',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer'
+                    }}
+                >
+                    返回顶部
+                </button>
+            )}
+        </>
+    )
+}
+```
+
+## API
+
+### useScroll
+
+```typescript
+const position = useScroll(
+  target?: Element | Document | React.MutableRefObject<Element>,
+  options?: UseScrollOptions
+): ScrollPosition
+```
+
+### 参数
+
+| 参数   | 说明                                              | 类型                                                    | 默认值    |
+| ------ | ------------------------------------------------- | ------------------------------------------------------- | --------- |
+| target | DOM 节点或者 Ref 对象                             | `Element \| Document \| React.MutableRefObject<Element>` | `document` |
+| options | 配置项，包括节流时间                               | `UseScrollOptions`                                      | -         |
+
+### UseScrollOptions
+
+| 参数 | 说明           | 类型     | 默认值 |
+| ---- | -------------- | -------- | ------ |
+| wait | 节流等待时间 (ms) | `number` | `0`    |
+
+### 返回值
+
+| 参数     | 说明       | 类型                  |
+| -------- | ---------- | --------------------- |
+| position | 滚动位置   | `{x: number, y: number}` |
+
+- `x`: 水平滚动位置（scrollLeft）
+- `y`: 垂直滚动位置（scrollTop）
+
+## 注意事项
+
+1. **性能优化**: 滚动事件触发频率很高，建议使用节流功能来优化性能
+2. **节流时间**: 根据实际需求设置 `wait` 参数，通常 50-100ms 较为合适
+3. **Ref 对象**: 确保传入的 ref 对象已经绑定到 DOM 元素
+4. **自动清理**: 组件卸载时会自动移除事件监听器，无需手动清理
+
+## 源码实现
+
+useScroll 的实现非常简洁，核心逻辑包括：
+
+1. 使用 `useState` 管理滚动位置状态
+2. 通过 `useEffect` 添加滚动事件监听器
+3. 实现节流功能来优化性能
+4. 在清理函数中移除事件监听器
+
+```typescript
+// 简化版实现示意
+export function useScroll(target, options) {
+    const [position, setPosition] = useState({ x: 0, y: 0 })
+
+    useEffect(() => {
+        const element = target || document
+
+        const handleScroll = () => {
+            const newPosition = {
+                x: element.scrollLeft,
+                y: element.scrollTop
+            }
+            // 节流处理...
+            setPosition(newPosition)
+        }
+
+        element.addEventListener('scroll', handleScroll)
+
+        return () => {
+            element.removeEventListener('scroll', handleScroll)
+        }
+    }, [target, options?.wait])
+
+    return position
+}
+```

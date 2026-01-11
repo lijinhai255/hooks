@@ -40,4 +40,5 @@ export const useInfo = () => {
 // 构建时，采用 drop 的方式，将 console.log 移除
 
 export { useBoolean } from './use-boolean/use-boolean'
+export { useScroll } from './use-scroll/use-scroll'
 export { useToggle } from './use-toggle/use-toggle'
