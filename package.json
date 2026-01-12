@@ -11,6 +11,7 @@
         "prepare": "husky",
         "build": "turbo run build",
         "dev": "turbo run dev",
+        "dev:privy-demo": "pnpm --filter=./apps/privy-demo dev",
         "test": "pnpm --filter=./packages/* test",
         "test:cov": "cross-env REACT_MODE=strict pnpm --filter=./packages/* test:cov",
         "publish:hooks": "pnpm publish --filter=./packages/hooks"
