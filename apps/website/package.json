@@ -12,7 +12,8 @@
     "description": "",
     "dependencies": {
         "@miaoma-rhooks/hooks": "workspace:*",
-        "@miaoma-rhooks/utils": "workspace:*"
+        "@miaoma-rhooks/utils": "workspace:*",
+        "@miaoma-rhooks/core":"workspace:*"
     },
     "devDependencies": {
         "rspress": "1.45.5",

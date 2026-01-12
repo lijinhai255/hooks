@@ -1,0 +1,63 @@
+---
+title: PrivyProviderWrapper
+order: 1
+---
+
+# PrivyProviderWrapper
+
+用于包装应用以集成 Privy 认证。
+
+## 环境要求
+
+> ⚠️ **注意**：此组件依赖 `@privy-io/react-auth`，需要配置 Node.js polyfills（如 `buffer`、`crypto` 等）才能在浏览器环境中运行。
+> 建议在支持服务端渲染的框架（如 Next.js）中使用，或配置相应的构建工具。
+
+## 基础用法
+
+```tsx
+import React from 'react'
+import { PrivyProviderWrapper } from "@miaoma-rhooks/core";
+
+function App() {
+    return (
+        <PrivyProviderWrapper>
+            <div>
+                <button>Connect</button>
+            </div>
+        </PrivyProviderWrapper>
+    );
+}
+```
+
+## 配置
+
+`PrivyProviderWrapper` 会读取以下环境变量：
+
+- `VITE_PRIVY_APP_ID` - Privy 应用 ID（必需）
+- `VITE_SOLANA_RPC_URL` - Solana RPC 节点地址（可选，默认使用 mainnet）
+- `VITE_SOLANA_RPC_WS_URL` - Solana WebSocket RPC 地址（可选）
+
+## 使用示例
+
+配合 `usePrivy` hook 实现完整的登录流程：
+
+```tsx
+import { usePrivy } from '@privy-io/react-auth'
+
+function LoginButton() {
+    const { login, logout, authenticated, user } = usePrivy()
+
+    if (authenticated) {
+        return (
+            <div>
+                <p>已登录: {user?.wallet?.address}</p>
+                <button onClick={logout}>断开连接</button>
+            </div>
+        )
+    }
+
+    return <button onClick={login}>连接钱包</button>
+}
+```
+
+### 实时演示
