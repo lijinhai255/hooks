@@ -42,6 +42,9 @@ export const useInfo = () => {
 export { useBoolean } from './use-boolean/use-boolean'
 export { useScroll } from './use-scroll/use-scroll'
 export { useToggle } from './use-toggle/use-toggle'
+export { default as useIsMobile } from './use-is-mobile'
+export { useTimeCountdown } from './use-time-countdown'
+export { useThrottleClick } from './use-throttle-click'
 
 // 工具函数导出
 export * from './utils'

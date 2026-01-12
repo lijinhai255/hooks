@@ -2,9 +2,9 @@
 pageType: home
 
 hero:
-    name: '@miaoma/rhooks'
-    text: 妙码学院 React Hooks 库
-    tagline: 追求极致！学习自定义 hooks 开发，丰富团队产出核心能力
+    name: 'HelloWorldDev - STR'
+    text: HelloWorldDev - STR
+    tagline: 追求极致！项目自定义 hooks 开发，丰富团队产出核心能力
     actions:
         - theme: brand
           text: 快速开始

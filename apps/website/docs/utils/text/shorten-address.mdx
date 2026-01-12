@@ -1,0 +1,126 @@
+# shortenAddress
+
+缩短地址显示，显示地址的前4个字符和后4个字符，中间用省略号连接。
+
+## 代码演示
+
+import ShortenAddressDemo from './components/ShortenAddress'
+
+<ShortenAddressDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| address | 地址字符串 | `string` | - |
+
+### 返回值
+
+返回缩短后的地址字符串，格式为 `"前4位...后4位"`。
+
+如果输入为空字符串、`null` 或 `undefined`，返回空字符串 `""`。
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { shortenAddress } from '@miaoma-rhooks/utils'
+
+// Solana 钱包地址
+shortenAddress("7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU")
+// "7xKX...gAsU"
+
+// Ethereum 钱包地址
+shortenAddress("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb")
+// "0x74...0bEb"
+
+// 空值处理
+shortenAddress("")  // ""
+```
+
+### 实际应用场景
+
+#### 钱包地址显示
+
+```tsx
+import { shortenAddress } from '@miaoma-rhooks/utils'
+
+function WalletCard({ address }: { address: string }) {
+  return (
+    <div>
+      <span title={address}>{shortenAddress(address)}</span>
+    </div>
+  )
+}
+```
+
+#### 交易列表
+
+```tsx
+import { shortenAddress } from '@miaoma-rhooks/utils'
+
+function TransactionList({ transactions }: {
+  transactions: Array<{ from: string; to: string }>
+}) {
+  return (
+    <table>
+      {transactions.map((tx, index) => (
+        <tr key={index}>
+          <td>{shortenAddress(tx.from)}</td>
+          <td>→</td>
+          <td>{shortenAddress(tx.to)}</td>
+        </tr>
+      ))}
+    </table>
+  )
+}
+```
+
+#### 复制功能
+
+```tsx
+import { shortenAddress } from '@miaoma-rhooks/utils'
+import { useState } from 'react'
+
+function CopyableAddress({ address }: { address: string }) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(address)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <button onClick={handleCopy}>
+      {copied ? '已复制!' : shortenAddress(address)}
+    </button>
+  )
+}
+```
+
+## 与 truncateText 的区别
+
+| 特性 | shortenAddress | truncateText |
+| --- | --- | --- |
+| 用途 | 专门用于地址缩短 | 通用文本截断 |
+| 格式 | `"前4位...后4位"` | `"前N位..."` |
+| 可配置 | 固定4+4格式 | 可自定义最大长度 |
+| 适用场景 | 钱包地址、合约地址 | 任何文本内容 |
+
+**选择建议：**
+- 显示区块链地址 → `shortenAddress`
+- 显示普通文本内容 → `truncateText`
+
+## 注意事项
+
+- 固定显示前4位和后4位，不可配置
+- 不检查地址的有效性，只进行字符串处理
+- 建议配合 `title` 属性使用，方便用户查看完整地址
+- 常见的地址格式：
+  - Solana：32-44 位（Base58）
+  - Ethereum：42 位（0x开头）
+  - BTC：26-35 位（Base58）

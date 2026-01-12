@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "truncate-text",
+    "label": "truncateText"
+  },
+  {
+    "type": "file",
+    "name": "truncateText",
+    "label": "truncateText 详细文档"
+  },
+  {
+    "type": "file",
+    "name": "shorten-address",
+    "label": "shortenAddress"
+  },
+  {
+    "type": "file",
+    "name": "shortenAddress",
+    "label": "shortenAddress 详细文档"
+  }
+]

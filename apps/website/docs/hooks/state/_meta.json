@@ -8,5 +8,20 @@
         "type": "file",
         "name": "use-toggle",
         "label": "useToggle"
+    },
+    {
+        "type": "dir",
+        "name": "use-is-mobile",
+        "label": "useIsMobile"
+    },
+    {
+        "type": "dir",
+        "name": "use-time-countdown",
+        "label": "useTimeCountdown"
+    },
+    {
+        "type": "dir",
+        "name": "use-throttle-click",
+        "label": "useThrottleClick"
     }
 ]

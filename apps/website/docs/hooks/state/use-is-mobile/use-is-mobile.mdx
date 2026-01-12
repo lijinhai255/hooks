@@ -1,0 +1,134 @@
+# useIsMobile
+
+响应式检测设备是否为移动端的自定义 Hook。
+
+## 代码演示
+
+import UseIsMobileDemo from './components/UseIsMobile'
+
+<UseIsMobileDemo />
+
+## API
+
+### 返回值
+
+返回一个布尔值：
+- `true` - 当前窗口宽度小于 768px（移动端）
+- `false` - 当前窗口宽度大于等于 768px（桌面端）
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { useIsMobile } from '@miaoma-rhooks/hooks'
+
+function MyComponent() {
+  const isMobile = useIsMobile()
+
+  return (
+    <div>
+      {isMobile ? '移动端视图' : '桌面端视图'}
+    </div>
+  )
+}
+```
+
+### 条件渲染
+
+```tsx
+import { useIsMobile } from '@miaoma-rhooks/hooks'
+
+function ResponsiveLayout() {
+  const isMobile = useIsMobile()
+
+  return (
+    <div>
+      {isMobile ? (
+        <MobileNavigation />
+      ) : (
+        <DesktopNavigation />
+      )}
+    </div>
+  )
+}
+```
+
+### 调整样式
+
+```tsx
+import { useIsMobile } from '@miaoma-rhooks/hooks'
+
+function Card() {
+  const isMobile = useIsMobile()
+
+  return (
+    <div style={{
+      padding: isMobile ? '12px' : '24px',
+      fontSize: isMobile ? '14px' : '16px'
+    }}>
+      内容
+    </div>
+  )
+}
+```
+
+### 响应式网格
+
+```tsx
+import { useIsMobile } from '@miaoma-rhooks/hooks'
+
+function Grid() {
+  const isMobile = useIsMobile()
+
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+      gap: isMobile ? '8px' : '16px'
+    }}>
+      {children}
+    </div>
+  )
+}
+```
+
+## 响应式断点
+
+默认断点设置为 **768px**：
+
+| 设备类型 | 屏幕宽度 | 返回值 |
+| --- | --- | --- |
+| 移动端 | < 768px | `true` |
+| 平板/桌面 | >= 768px | `false` |
+
+## 注意事项
+
+- SSR 场景：服务端渲染时默认返回 `false`
+- 性能：会监听 `resize` 事件，避免在多个组件中重复使用
+- 断点：固定为 768px，如需自定义建议创建自己的 Hook
+
+## 最佳实践
+
+### ✅ 推荐做法
+
+```tsx
+// 1. 条件渲染
+{isMobile ? <MobileView /> : <DesktopView />}
+
+// 2. 调整布局
+<div style={{ flexDirection: isMobile ? 'column' : 'row' }}>
+
+// 3. 性能优化
+{!isMobile && <HeavyComponent />}
+```
+
+### ❌ 不推荐做法
+
+```tsx
+// 1. 避免在多个组件中重复使用
+// 应该在顶层组件判断后通过 props 传递
+
+// 2. 纯样式调整应该用 CSS
+// 使用 CSS 媒体查询更合适
+```

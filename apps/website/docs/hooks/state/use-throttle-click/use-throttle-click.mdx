@@ -1,0 +1,111 @@
+# useThrottleClick
+
+防抖点击 Hook，防止按钮在短时间内被多次点击。
+
+## 代码演示
+
+import UseThrottleClickDemo from './components/UseThrottleClick'
+
+<UseThrottleClickDemo />
+
+## API
+
+### 参数
+
+| 参数 | 类型 | 默认值 | 描述 |
+| --- | --- | --- | --- |
+| callback | `(...args: T) => void` | - | 点击时执行的回调函数 |
+| delay | `number` | `500` | 节流延迟时间（毫秒） |
+
+### 返回值
+
+返回一个元组：
+- **throttledCallback** - 节流后的回调函数
+- **isLoading** - 是否处于节流等待中
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { useThrottleClick } from '@miaoma-rhooks/hooks'
+
+function SubmitButton() {
+  const [handleClick, isLoading] = useThrottleClick(() => {
+    console.log('提交')
+  }, 1000)
+
+  return (
+    <button onClick={handleClick} disabled={isLoading}>
+      {isLoading ? '提交中...' : '提交'}
+    </button>
+  )
+}
+```
+
+### 带参数的回调
+
+```tsx
+import { useThrottleClick } from '@miaoma-rhooks/hooks'
+
+function LikeButton({ postId }: { postId: string }) {
+  const [handleLike, isLiking] = useThrottleClick((id: string) => {
+    fetch(`/api/like/${id}`)
+  }, 2000)
+
+  return (
+    <button onClick={() => handleLike(postId)} disabled={isLiking}>
+      {isLiking ? '点赞中...' : '👍 点赞'}
+    </button>
+  )
+}
+```
+
+### 异步操作
+
+```tsx
+import { useThrottleClick } from '@miaoma-rhooks/hooks'
+
+function AsyncButton() {
+  const [handleFetch, isLoading] = useThrottleClick(async () => {
+    const response = await fetch('/api/data')
+    const data = await response.json()
+    console.log(data)
+  }, 1000)
+
+  return (
+    <button onClick={handleFetch} disabled={isLoading}>
+      {isLoading ? '加载中...' : '获取数据'}
+    </button>
+  )
+}
+```
+
+## 工作原理
+
+1. 首次点击立即执行回调
+2. 在延迟时间内的后续点击被忽略
+3. 延迟结束后自动重置状态
+
+## 注意事项
+
+- 始终使用 `isLoading` 禁用按钮
+- 根据操作类型选择合适的延迟时间
+- 快速操作：300-500ms
+- 普通操作：500-1000ms
+- 慢速操作：1000-3000ms
+
+## 最佳实践
+
+```tsx
+// ✅ 推荐做法
+const [handleClick, isLoading] = useThrottleClick(callback, 1000)
+<button onClick={handleClick} disabled={isLoading}>
+  {isLoading ? '处理中...' : '点击'}
+</button>
+
+// ❌ 不推荐做法
+<button onClick={handleClick}>  // 没有 disabled
+  点击
+</button>
+```

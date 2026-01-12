@@ -210,14 +210,48 @@ export function formatSmallNumber(num: number): string {
 
 /**
  * 格式化美元金额
- * @param amount - 美元金额
- * @returns 格式化后的字符串（带$符号和千分位）
+ * @param value - 原始值（字符串或数字）
+ * @param compact - 是否使用紧凑格式（K、M、B）
+ * @returns 格式化后的美元金额字符串
  */
-export function formatUsdAmount(amount: number): string {
-    if (!amount || amount <= 0) return '$0'
+export function formatUsdAmount(value: string | number | undefined | null, compact: boolean = true): string {
+    if (!value || value === 0) return "$0";
 
-    // 使用 formatValue 进行格式化
-    return formatValue(amount)
+    try {
+        const numValue = typeof value === "string" ? parseFloat(value) : value;
+
+        if (compact) {
+            if (numValue >= 1e9) {
+                return `${(numValue / 1e9).toFixed(2)}B`;
+            } else if (numValue >= 1e6) {
+                return `${(numValue / 1e6).toFixed(2)}M`;
+            } else if (numValue >= 1e3) {
+                return `${(numValue / 1e3).toFixed(2)}K`;
+            }
+        }
+
+        // 处理非常小的数字，使用特殊格式 0.0₆2255
+        if (numValue < 0.001 && numValue > 0) {
+            const str = numValue.toFixed(20);
+            const match = str.match(/^0\.0+([1-9]\d*)/);
+            if (match) {
+                const leadingZeros = match[0].length - 3; // 减去 "0.0" 的长度
+                const significantDigits = match[1];
+                // 使用 Unicode 下标字符: ₀₁₂₃₄₅₆₇₈₉
+                const subscriptDigits = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
+                const subscript = leadingZeros <= 9 ? subscriptDigits[leadingZeros] : leadingZeros.toString();
+                return `$0.0${subscript}${significantDigits}`;
+            }
+        }
+
+        return `$${numValue.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 6,
+        })}`;
+    } catch (error) {
+        console.error("格式化美元金额失败:", error);
+        return "$0";
+    }
 }
 
 /**
@@ -311,5 +345,32 @@ export function formatAmountInYiOrWan(amount: string | number): string {
         }
     } catch {
         return '0'
+    }
+}
+
+/**
+ * 计算版税价值（最小单位转换为USD）
+ * @param amount - 代币数量（最小单位）
+ * @param tokenDecimals - 代币精度（如9、6等，默认9）
+ * @param price - 单个代币的USD价格
+ * @returns USD价值
+ */
+export function calculateRoyaltyValue(
+    amount: string | number | undefined | null,
+    tokenDecimals: number = 9,
+    price: number
+): number {
+    try {
+        if (!amount || !price) {
+            return 0;
+        }
+
+        const numAmount = typeof amount === "string" ? parseFloat(amount) : amount;
+        // 将最小单位转换为代币数量（除以10^tokenDecimals），然后乘以价格
+        const divisor = Math.pow(10, tokenDecimals);
+        return (numAmount / divisor) * price;
+    } catch (error) {
+        console.error("计算版税价值失败:", error);
+        return 0;
     }
 }

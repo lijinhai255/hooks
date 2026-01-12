@@ -1,0 +1,86 @@
+# truncateText
+
+截断文本，如果文本长度超过指定长度，则截断并添加省略号。
+
+## 代码演示
+
+import TruncateTextDemo from './components/TruncateText'
+
+<TruncateTextDemo />
+
+## API
+
+### 参数
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| text | 原始文本 | `string` | - |
+| maxLength | 最大长度 | `number` | `8` |
+
+### 返回值
+
+返回截断后的文本字符串：
+- 如果文本长度 ≤ `maxLength`，返回原文本
+- 如果文本长度 > `maxLength`，返回截断后的文本 + "..."
+- 如果文本为空（`""`、`null`、`undefined`），返回空字符串 `""`
+
+## 使用示例
+
+### 基本用法
+
+```tsx
+import { truncateText } from '@miaoma-rhooks/utils'
+
+// 使用默认长度（8）
+truncateText("Hello World")        // "Hello..."
+truncateText("Blockchain")         // "Blockch..."
+truncateText("Short")              // "Short"
+
+// 自定义长度
+truncateText("Hello World", 5)     // "Hel..."
+truncateText("Hello World", 20)    // "Hello World"
+
+// 空值处理
+truncateText("")                   // ""
+truncateText(undefined as any)     // ""
+```
+
+### 实际应用场景
+
+#### 钱包地址截断
+
+```tsx
+const address = "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+truncateText(address, 6)           // "7xKXtg..."
+```
+
+#### 用户名截断
+
+```tsx
+const username = "SuperLongUsername123"
+truncateText(username, 12)         // "SuperLongUse..."
+```
+
+#### 在 React 组件中使用
+
+```tsx
+import { truncateText } from '@miaoma-rhooks/utils'
+
+function WalletAddress({ address }: { address: string }) {
+  return (
+    <div title={address}>
+      {truncateText(address, 8)}
+    </div>
+  )
+}
+
+<WalletAddress address="7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU" />
+// 显示: "7xKXtg..."
+```
+
+## 注意事项
+
+- 截断长度包含省略号的三个字符
+- 省略号始终是英文的三个点 `...`
+- 对于空字符串或 `null`/`undefined`，返回空字符串
+- 默认最大长度为 8，适用于大多数场景
